@@ -86,7 +86,26 @@ just the case of adding an extra line to a config file and re-running the build 
 Usage for users
 ===============
 
-If another Nginx module you wish to use specifies that the NDK is a dependency, you
+Pre-built packages for this module are freely available from the GetPageSpeed repository for Ubuntu and Debian:
+
+```bash
+# Install the repository keyring
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://extras.getpagespeed.com/deb-archive-keyring.gpg \
+  | sudo tee /etc/apt/keyrings/getpagespeed.gpg >/dev/null
+
+# Add the repository (Ubuntu example - replace 'ubuntu' and 'jammy' for your distro)
+echo "deb [signed-by=/etc/apt/keyrings/getpagespeed.gpg] https://extras.getpagespeed.com/ubuntu jammy main" \
+  | sudo tee /etc/apt/sources.list.d/getpagespeed-extras.list
+
+# Install nginx and the module
+sudo apt-get update
+sudo apt-get install nginx nginx-module-ndk
+```
+
+The module is automatically enabled after installation. Supported distributions include Debian 12/13 and Ubuntu 20.04/22.04/24.04 (both amd64 and arm64). See [the complete setup instructions](https://apt-nginx-extras.getpagespeed.com/apt-setup/).
+
+Alternatively, if another Nginx module you wish to use specifies that the NDK is a dependency, you
 will need to do the following :
 
 1. download the source (https://github.com/simpl/ngx_devel_kit)
