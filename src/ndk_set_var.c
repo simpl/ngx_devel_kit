@@ -452,7 +452,9 @@ ndk_set_var_filter_value(ndk_set_var_info_t *info, ndk_set_var_t *filter)
     ngx_http_variable_t                 *v;
     ndk_http_rewrite_loc_conf_t         *rlcf;
     ngx_http_script_var_code_t          *vcode;
+#if !(defined freenginx && nginx_version >= 1031003)
     ngx_http_script_var_handler_code_t  *vhcode;
+#endif
 
     v = info->v;
     cf = info->cf;
@@ -462,6 +464,7 @@ ndk_set_var_filter_value(ndk_set_var_info_t *info, ndk_set_var_t *filter)
         return NGX_CONF_ERROR;
     }
 
+#if !(defined freenginx && nginx_version >= 1031003)
     if (v->set_handler) {
         vhcode = ngx_http_script_start_code(cf->pool, &rlcf->codes,
                                    sizeof(ngx_http_script_var_handler_code_t));
@@ -475,6 +478,7 @@ ndk_set_var_filter_value(ndk_set_var_info_t *info, ndk_set_var_t *filter)
 
         return NGX_CONF_OK;
     }
+#endif
 
     vcode = ngx_http_script_start_code(cf->pool, &rlcf->codes,
                                        sizeof(ngx_http_script_var_code_t));
