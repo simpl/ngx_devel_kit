@@ -58,6 +58,11 @@ fi
 
 have=NDK . auto/have
 
+# Script engine capabilities cannot be inferred from versions across forks.
+if grep -q ngx_http_script_complex_value_end_code src/http/ngx_http_script.h 2>/dev/null; then
+    have=NDK_HAVE_HTTP_SCRIPT_COMPLEX_VALUE_END_CODE . auto/have
+fi
+
 ##############
 ## INCLUDES ##
 ##############

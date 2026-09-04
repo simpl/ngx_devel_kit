@@ -17,6 +17,9 @@ ndk_http_rewrite_value (ngx_conf_t *cf, ndk_http_rewrite_loc_conf_t *lcf,
     ngx_http_script_compile_t              sc;
     ngx_http_script_value_code_t          *val;
     ngx_http_script_complex_value_code_t  *complex;
+#ifdef NDK_HAVE_HTTP_SCRIPT_COMPLEX_VALUE_END_CODE
+    ngx_http_script_complex_value_end_code_t  *complex_end;
+#endif
 
     n = ngx_http_script_variables_count(value);
 
@@ -62,6 +65,17 @@ ndk_http_rewrite_value (ngx_conf_t *cf, ndk_http_rewrite_loc_conf_t *lcf,
     if (ngx_http_script_compile(&sc) != NGX_OK) {
         return NGX_CONF_ERROR;
     }
+
+#ifdef NDK_HAVE_HTTP_SCRIPT_COMPLEX_VALUE_END_CODE
+    complex_end = ngx_http_script_add_code(lcf->codes,
+                              sizeof(ngx_http_script_complex_value_end_code_t),
+                              &complex);
+    if (complex_end == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    complex_end->code = ngx_http_script_complex_value_end_code;
+#endif
 
     return NGX_CONF_OK;
 }
